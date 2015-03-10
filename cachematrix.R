@@ -1,15 +1,33 @@
-## Puuuuuuuuut comments here that give an overall description of what your
-## functions do
+## Calcucating the inverse matrix caching already solved examples for faster computing next time.
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix()) { ## Returns a list of functions
+    i <- NULL
+    set <- function(y) { ## setting matrix 
+        x <<- y
+        i <<- NULL
+    }
+    get <- function() x { ## getting matrix 
+    setinv <- function(solve) i <<- solve { ## setting inverse matrix 
+    getinv <- function() i { ## getting inverse matrix
+    list(set = set, get = get,
+         setinv = setinv,
+         getinv = getinv)
 }
 
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(x, ...) { ## Calculating the inverse matrix 
+    i <- x$getinv()
+    
+    if(!is.null(i)) { 
+    ##Checking if the inverse for this matrix has been already calculated. 
+    ##If so, returned calculated inverse matrix from cache
+        message("getting cached data")
+        return(i)
+    }
+    
+    data <- x$get() ##Otherwise calculate inverse matrix... 
+    i <- solve(data, ...) 
+    x$setinv(i) ##..and set it in the cache
+    i
+    
 }
