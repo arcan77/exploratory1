@@ -1,105 +1,918 @@
-##Hello!
-
-This is a short description of how to get my tidy data from the original.
+##Data Dictionary
 
 
-####Step 1:
-Download the archive with origin data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip and unzip it
 
-<!-- -->
-    tempfile <- tempfile()
-    url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-    download.file(url, tempfile, method="curl")
-    unzip(tempfile)
-    unlink(tempfile)
-    setwd("UCI HAR Dataset")
+<table>
+<tr>
+<td></td>
+<td></td>
+<th>Variable Name</th>
+<th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th>Value</th>
+<th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th>Description</th>
+</tr>
 
-####Step 2:
-Examine the data in unzipped folder according to README.txt in it:
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-1.  "features.txt has the names of all features
-2.  "activity_labels.txt"  has the names of all activities and their id
-3.  in both "test" and "train" folders there is the same structure of files: "X*.txt" is the data frame of measurements for all features (descibed in "features.txt"); "subject*.txt" is the vector of subject id for all measurements; "y*.txt" is the vector of activity id (described in "activity_labels.txt")
+<tr>
+<td>1</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Activity Name</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Name of the subject activity when the data was collected</td>
+</tr>
 
-####Step 3:
-Read this tables into data frames and give names to each column with `names` function. For data frame with measurements ("X*.txt") names of columns are equal to the vector of names in feature data frame. Specific names for each columns i used can be found in "run_analyses.R" file in my comments.
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>LAYING</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    features <- read.table("features.txt")
-    names(features) <- c("FeatureId","FeatureName")
-    
-    activityLabels <- read.table("activity_labels.txt")
-    names(activityLabels) <- c("ActivityId","ActivityName")
-    
-    testX <- read.table("test/X_test.txt")
-    testSubject <- read.table("test/subject_test.txt")
-    testLabels <- read.table("test/y_test.txt")
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>SITTING</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-    trainX <- read.table("train/X_train.txt")
-    trainSubject <- read.table("train/subject_train.txt")
-    trainLabels <- read.table("train/y_train.txt")
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>STANDING</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-    #Giving names to the trainX and testX of the names of the features
-    names(trainX) <- features$FeatureName
-    names(testX) <- features$FeatureName
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>WALKING</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-    #Giving names to the column of trainLabels and testLabels
-    names(trainLabels) <- "ActivityId"
-    names(testLabels) <- "ActivityId"
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>WALKING_DOWNSTAIRS</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-    #Giving names to the column of trainSubject and testSubject
-    names(trainSubject) <- "SubjectId"
-    names(testSubject) <- "SubjectId"
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>WALKING_UPSTAIRS</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-####Step 3:
-Merge Activity + Subject + Measurements data for each train and test sets by `cbind` function
+<tr>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    allTrain <- cbind(trainSubject, trainLabels, trainX)
-    allTest <- cbind(testSubject, testLabels, testX)
+<tr>
+<td colspan=7><strong>Each next column contains the mean value of the variable name for the Activity Name and SubjectId. In basic variable Names were constructed with this rules:
 
-####Step 4:
-Merge Train + Test data by `rbind` function 
+*   '-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+* '-mean()-' is used in variables with mean value for each initial observation
+* '-std()-' is used in variables with standart deviation for each initial observation
+* prefix 'f' indicates frequency domain signals
+* prefix 't' is used to denote time</strong>
 
-<!-- -->
-    all <- rbind(allTrain,allTest)
+</td>
+</tr>
 
-####Step 5:
-Merge All data (from step 4) with activity labels from "activity_labels.txt" by `merge` function.
+<tr>
+<td></td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    allWithLabels <- merge(all,activityLabels,by.x="ActivityId",by.y="ActivityId", all=FALSE)
 
-####Step 6:
-Change the columns in data frame from Step 5 (just for author's comfort:) ). The new column order is: LabelId, LabelName, SubjectId, Features...
+<tr>
+<td>2</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>SubjectId</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>1..30</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>The number of subject, the experiments have been carried out with </td>
+</tr>
 
-####Step 7:
-Get numbers of features with "mean" and "std" from "features.txt" using `grep` function and `sort` the output vector (just to make it readable).
+<tr>
+<td>3</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    FeatureNumbersWithMeans <- grep("mean()",features$FeatureName, value=FALSE)
-    FeatureNumbersWithStd <- grep("std()",features$FeatureName, value=FALSE)
-    FeatureNumbers <- sort(c(FeatureNumbersWithMeans, FeatureNumbersWithStd))
+<tr>
+<td>4</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-####Step 8:
-Delete from "All" data columns which names doesn't have "mean" or "std". But manualy save second and third column ("Activity Name", "Subject Id") because we will need them for calculate mean.
+<tr>
+<td>5</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    FeatureNumbersToSave <-c(2,3,FeaturesWithMeanAndStd)
-    allTogetherOnlySaved <- allTogether[,FeatureNumbersToSave]
+<tr>
+<td>6</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-####Step 9:
-Calculate mean of all features for ActivityName + SubjectId using `melt` and `dcast` from `reshape2` library as it was in lecture 3:4
+<tr>
+<td>7</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    library(reshape2)
-    AllMelt <- melt(allTogetherOnlySaved, id=c("ActivityName","SubjectId"), measure.var=names(allTogetherOnlySaved[3:80]))
-    MeanForEach <- dcast(AllMelt, ActivityName + SubjectId ~ variable, mean)
+<tr>
+<td>8</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAcc-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-####Step 10:
-Write the output to the file using `write.table` function with `row.names=FALSE, col.names=TRUE`
+<tr>
+<td>9</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
 
-<!-- -->
-    write.table(MeanForEach,"CourseProject.txt", row.names=FALSE, col.names=TRUE)
-    
-For more information please look at "run_analyses.R": it has more operations and comments.
+<tr>
+<td>10</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>14</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAcc-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>15</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>16</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>17</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>18</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>19</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>20</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerk-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>21</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>22</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>23</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>24</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>25</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>26</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyro-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>27</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>28</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>29</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>30</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>31</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>32</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerk-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>33</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>34</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>35</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAccMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>36</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tGravityAccMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>37</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerkMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>38</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyAccJerkMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>39</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>40</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>41</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerkMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>42</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>tBodyGyroJerkMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>43</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>44</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>45</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>46</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>47</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>48</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>49</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-meanFreq()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>50</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-meanFreq()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>51</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAcc-meanFreq()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>52</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>53</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>54</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>55</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>56</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>57</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>58</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-meanFreq()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>59</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-meanFreq()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>60</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccJerk-meanFreq()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>61</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-mean()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>62</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-mean()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>63</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-mean()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>64</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-std()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>65</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-std()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>66</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-std()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>67</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-meanFreq()-X</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>68</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-meanFreq()-Y</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>69</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyGyro-meanFreq()-Z</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>70</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>71</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>72</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyAccMag-meanFreq()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>73</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyAccJerkMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>74</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyAccJerkMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>75</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyAccJerkMag-meanFreq()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>76</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyGyroMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr><td>77</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyGyroMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>78</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyGyroMag-meanFreq()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>79</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyGyroJerkMag-mean()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
+<tr>
+<td>80</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>fBodyBodyGyroJerkMag-std()</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+</table>
+
