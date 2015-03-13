@@ -1,105 +1,105 @@
-### Introduction!
+##Hello!
 
-This second programming assignment will require you to write an R
-function that is able to cache potentially time-consuming computations.
-For example, taking the mean of a numeric vector is typically a fast
-operation. However, for a very long vector, it may take too long to
-compute the mean, especially if it has to be computed repeatedly (e.g.
-in a loop). If the contents of a vector are not changing, it may make
-sense to cache the value of the mean so that when we need it again, it
-can be looked up in the cache rather than recomputed. In this
-Programming Assignment you will take advantage of the scoping rules of
-the R language and how they can be manipulated to preserve state inside
-of an R object.
+This is a short description of how to get my tidy data from the original.
 
-### Example: Caching the Mean of a Vector
 
-In this example we introduce the `<<-` operator which can be used to
-assign a value to an object in an environment that is different from the
-current environment. Below are two functions that are used to create a
-special object that stores a numeric vector and caches its mean.
-
-The first function, `makeVector` creates a special "vector", which is
-really a list containing a function to
-
-1.  set the value of the vector
-2.  get the value of the vector
-3.  set the value of the mean
-4.  get the value of the mean
+####Step 1:
+Download the archive with origin data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip and unzip it
 
 <!-- -->
+    tempfile <- tempfile()
+    url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+    download.file(url, tempfile, method="curl")
+    unzip(tempfile)
+    unlink(tempfile)
+    setwd("UCI HAR Dataset")
 
-    makeVector <- function(x = numeric()) {
-            m <- NULL
-            set <- function(y) {
-                    x <<- y
-                    m <<- NULL
-            }
-            get <- function() x
-            setmean <- function(mean) m <<- mean
-            getmean <- function() m
-            list(set = set, get = get,
-                 setmean = setmean,
-                 getmean = getmean)
-    }
+####Step 2:
+Examine the data in unzipped folder according to README.txt in it:
 
-The following function calculates the mean of the special "vector"
-created with the above function. However, it first checks to see if the
-mean has already been calculated. If so, it `get`s the mean from the
-cache and skips the computation. Otherwise, it calculates the mean of
-the data and sets the value of the mean in the cache via the `setmean`
-function.
+1.  "features.txt has the names of all features
+2.  "activity_labels.txt"  has the names of all activities and their id
+3.  in both "test" and "train" folders there is the same structure of files: "X*.txt" is the data frame of measurements for all features (descibed in "features.txt"); "subject*.txt" is the vector of subject id for all measurements; "y*.txt" is the vector of activity id (described in "activity_labels.txt")
 
-    cachemean <- function(x, ...) {
-            m <- x$getmean()
-            if(!is.null(m)) {
-                    message("getting cached data")
-                    return(m)
-            }
-            data <- x$get()
-            m <- mean(data, ...)
-            x$setmean(m)
-            m
-    }
+####Step 3:
+Read this tables into data frames and give names to each column with `names` function. For data frame with measurements ("X*.txt") names of columns are equal to the vector of names in feature data frame. Specific names for each columns i used can be found in "run_analyses.R" file in my comments.
 
-### Assignment: Caching the Inverse of a Matrix
+<!-- -->
+    features <- read.table("features.txt")
+    names(features) <- c("FeatureId","FeatureName")
+    
+    activityLabels <- read.table("activity_labels.txt")
+    names(activityLabels) <- c("ActivityId","ActivityName")
+    
+    testX <- read.table("test/X_test.txt")
+    testSubject <- read.table("test/subject_test.txt")
+    testLabels <- read.table("test/y_test.txt")
 
-Matrix inversion is usually a costly computation and there may be some
-benefit to caching the inverse of a matrix rather than computing it
-repeatedly (there are also alternatives to matrix inversion that we will
-not discuss here). Your assignment is to write a pair of functions that
-cache the inverse of a matrix.
+    trainX <- read.table("train/X_train.txt")
+    trainSubject <- read.table("train/subject_train.txt")
+    trainLabels <- read.table("train/y_train.txt")
 
-Write the following functions:
+    #Giving names to the trainX and testX of the names of the features
+    names(trainX) <- features$FeatureName
+    names(testX) <- features$FeatureName
 
-1.  `makeCacheMatrix`: This function creates a special "matrix" object
-    that can cache its inverse.
-2.  `cacheSolve`: This function computes the inverse of the special
-    "matrix" returned by `makeCacheMatrix` above. If the inverse has
-    already been calculated (and the matrix has not changed), then
-    `cacheSolve` should retrieve the inverse from the cache.
+    #Giving names to the column of trainLabels and testLabels
+    names(trainLabels) <- "ActivityId"
+    names(testLabels) <- "ActivityId"
 
-Computing the inverse of a square matrix can be done with the `solve`
-function in R. For example, if `X` is a square invertible matrix, then
-`solve(X)` returns its inverse.
+    #Giving names to the column of trainSubject and testSubject
+    names(trainSubject) <- "SubjectId"
+    names(testSubject) <- "SubjectId"
 
-For this assignment, assume that the matrix supplied is always
-invertible.
+####Step 3:
+Merge Activity + Subject + Measurements data for each train and test sets by `cbind` function
 
-In order to complete this assignment, you must do the following:
+<!-- -->
+    allTrain <- cbind(trainSubject, trainLabels, trainX)
+    allTest <- cbind(testSubject, testLabels, testX)
 
-1.  Fork the GitHub repository containing the stub R files at
-    [https://github.com/rdpeng/ProgrammingAssignment2](https://github.com/rdpeng/ProgrammingAssignment2)
-    to create a copy under your own account.
-2.  Clone your forked GitHub repository to your computer so that you can
-    edit the files locally on your own machine.
-3.  Edit the R file contained in the git repository and place your
-    solution in that file (please do not rename the file).
-4.  Commit your completed R file into YOUR git repository and push your
-    git branch to the GitHub repository under your account.
-5.  Submit to Coursera the URL to your GitHub repository that contains
-    the completed R code for the assignment.
+####Step 4:
+Merge Train + Test data by `rbind` function 
 
-### Grading
+<!-- -->
+    all <- rbind(allTrain,allTest)
 
-This assignment will be graded via peer assessment.
+####Step 5:
+Merge All data (from step 4) with activity labels from "activity_labels.txt" by `merge` function.
+
+<!-- -->
+    allWithLabels <- merge(all,activityLabels,by.x="ActivityId",by.y="ActivityId", all=FALSE)
+
+####Step 6:
+Change the columns in data frame from Step 5 (just for author's comfort:) ). The new column order is: LabelId, LabelName, SubjectId, Features...
+
+####Step 7:
+Get numbers of features with "mean" and "std" from "features.txt" using `grep` function and `sort` the output vector (just to make it readable).
+
+<!-- -->
+    FeatureNumbersWithMeans <- grep("mean()",features$FeatureName, value=FALSE)
+    FeatureNumbersWithStd <- grep("std()",features$FeatureName, value=FALSE)
+    FeatureNumbers <- sort(c(FeatureNumbersWithMeans, FeatureNumbersWithStd))
+
+####Step 8:
+Delete from "All" data columns which names doesn't have "mean" or "std". But manualy save second and third column ("Activity Name", "Subject Id") because we will need them for calculate mean.
+
+<!-- -->
+    FeatureNumbersToSave <-c(2,3,FeaturesWithMeanAndStd)
+    allTogetherOnlySaved <- allTogether[,FeatureNumbersToSave]
+
+####Step 9:
+Calculate mean of all features for ActivityName + SubjectId using `melt` and `dcast` from `reshape2` library as it was in lecture 3:4
+
+<!-- -->
+    library(reshape2)
+    AllMelt <- melt(allTogetherOnlySaved, id=c("ActivityName","SubjectId"), measure.var=names(allTogetherOnlySaved[3:80]))
+    MeanForEach <- dcast(AllMelt, ActivityName + SubjectId ~ variable, mean)
+
+####Step 10:
+Write the output to the file using `write.table` function with `row.names=FALSE, col.names=TRUE`
+
+<!-- -->
+    write.table(MeanForEach,"CourseProject.txt", row.names=FALSE, col.names=TRUE)
+    
+For more information please look at "run_analyses.R": it has more operations and comments.
