@@ -103,6 +103,28 @@
 <td></td>
 </tr>
 
+
+<tr>
+<td>2</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>SubjectId</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>1..30</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>The number of subject, the experiments have been carried out with </td>
+</tr>
+
+
+<tr>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td></td>
+</tr>
+
 <tr>
 <td colspan=7><strong>Each next column contains the mean value of the variable name for the Activity Name and SubjectId. In basic variable Names were constructed with this rules:
 
@@ -125,16 +147,6 @@
 <td></td>
 </tr>
 
-
-<tr>
-<td>2</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td>SubjectId</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td>1..30</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td>The number of subject, the experiments have been carried out with </td>
-</tr>
 
 <tr>
 <td>3</td>
