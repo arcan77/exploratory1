@@ -7,7 +7,6 @@ unlink(tempfile) #delete temporary file
 
 
 #Opening feature file and setting its column names
-language <- "English" 
 PowerConsumption <- read.table("household_power_consumption.txt", header=TRUE, sep= ";", na.strings="?")
 #Adding Date+Time column in POSIXlt format
 library(dplyr)
